@@ -7,7 +7,7 @@ import '../models/doctor.dart';
 import '../models/paciente.dart';
 
 class ApiService {
-  static const String defaultBaseUrl = 'http://localhost:5087/api';
+  static const String defaultBaseUrl = 'http://10.79.13.130:5087/api';
 
   ApiService({String? baseUrl}) : baseUrl = baseUrl ?? defaultBaseUrl;
 
@@ -39,6 +39,14 @@ class ApiService {
         .timeout(const Duration(seconds: 15));
     _checkResponse(response, 'cargar citas médicas');
     return _decodeList(response).map(CitaMedica.fromJson).toList();
+  }
+
+  Future<List<Doctor>> getDoctores() async {
+    final response = await http
+        .get(Uri.parse('$baseUrl/doctores'))
+        .timeout(const Duration(seconds: 15));
+    _checkResponse(response, 'cargar doctores');
+    return _decodeList(response).map(Doctor.fromJson).toList();
   }
 
   Future<bool> crearDoctor(Doctor doctor) async {
